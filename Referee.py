@@ -1,4 +1,4 @@
-# Title: Chess Board Class and its methods
+# Title: Referee class 
 # Author: Vedat Sinan Ural, Ali Sinan Saglam
 # Contact: vsural@gmail.com, asinansaglam@gmail.com
 # Created on Sat Jun 13 23:53:13 2015
