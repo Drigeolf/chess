@@ -4,7 +4,7 @@
 # Created on Sat Jun 13 23:53:13 2015
 
 import numpy as np
-from base_modules import *
+from base_modules import BaseModule
  
  
 class CBoard(BaseModule):

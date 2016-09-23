@@ -1,9 +1,9 @@
 # A decorator for the classes
-def in_history(f):
-    def new_f(*args, **kwargs):
-        args[0].msg_history.append(args[1])
-        f(*args, **kwargs)
-    return new_f
+#def in_history(f):
+#    def new_f(*args, **kwargs):
+#        args[0].msg_history.append(args[1])
+#        f(*args, **kwargs)
+#    return new_f
 # Module classes
 class BaseModule(object):
     '''
@@ -12,31 +12,17 @@ class BaseModule(object):
     just calls the target modules receive function
     '''
     def __init__(self):
+        self.msg_q = []
         self.att_modules = {}
         self.msg_types = {}
         self.msg_history = []
         self.name = "Base"
 
     def send(self, msg, tmodule):
-        tmodule.receive(msg)
+        tmodule.msg_q.append(msg)
 
     def attach_module(self, module):
         self.att_modules[module.name] = module
-
-class MainBus(BaseModule):
-    '''
-    The only function of this module is to pass the messages to 
-    the attached modules
-    '''
-
-    def __init__(self):
-        super(MainBus, self).__init__()
-        self.name = "MainBus"
-
-    @in_history
-    def receive(self, msg):
-        for module in self.att_modules.iterkeys():
-            self.send(msg, module)
 
 class BaseMsg:
     '''
