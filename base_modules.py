@@ -4,6 +4,7 @@
 #        args[0].msg_history.append(args[1])
 #        f(*args, **kwargs)
 #    return new_f
+
 # Module classes
 class BaseModule(object):
     '''

@@ -1,4 +1,4 @@
-from base_module import BaseModule
+from base_modules import BaseModule
 
 class MainBus(BaseModule):
     '''
@@ -12,7 +12,7 @@ class MainBus(BaseModule):
     #@in_history
     def handle_msg(self, msg):
         for module in self.att_modules.iterkeys():
-            self.send(msg, module)
+            self.send(msg, self.att_modules[module])
 
     def run(self):
         while len(self.msg_q) > 0:
