@@ -4,9 +4,10 @@
 # Created on Sat Jun 13 23:53:13 2015
 
 import numpy as np
+from base_modules import *
  
  
-class CBoard:
+class CBoard(BaseModule):
     """
     A Chess board class written for our
     Chess engine program.
@@ -34,6 +35,10 @@ class CBoard:
     check shows if a king is in check currently in the board state
     """
     def __init__(self, board=None, turn=0, cw=0, cb=0, threp=0, move50=0, check=0):
+        # First module related business
+        super(CBoard, self).__init__()
+        self.name = "Board"
+        # Now board specific attributes
         self.board = board
         self.turn = 0
         self.cw = cw
@@ -56,6 +61,11 @@ class CBoard:
               6: "K", -1: "o", -2: "n", 
               -3: "b", -4: "r", -5: "q",
               -6: "k" }
+
+    def receive(self, msg):
+        """
+        The method to parse messages sent to this module
+        """
  
     def initBoard(self, gameType="normal"):
         """
