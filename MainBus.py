@@ -12,9 +12,10 @@ class MainBus(BaseModule):
     #@in_history
     def handle_msg(self, msg):
         for module in self.att_modules.iterkeys():
+            #print("#########")
+            #print("Reading msg type %s"%msg.mtype)
+            #print("Reading msg content")
+            #print(msg.content)
+            #print("Sending msg to: %s"%module)
+            #print("#########")
             self.send(msg, self.att_modules[module])
-
-    def run(self):
-        while len(self.msg_q) > 0:
-            curr_msg = self.msg_q.pop(0)
-            self.handle_msg(curr_msg)

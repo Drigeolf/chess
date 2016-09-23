@@ -5,6 +5,7 @@
 
 import numpy as np
 from base_modules import BaseModule
+from base_modules import BaseMsg
  
 class CBoard(BaseModule):
     """
@@ -60,11 +61,27 @@ class CBoard(BaseModule):
               6: "K", -1: "o", -2: "n", 
               -3: "b", -4: "r", -5: "q",
               -6: "k" }
+        # At least for now just initialize the board
+        self.initBoard()
 
-    def receive(self, msg):
-        """
-        The method to parse messages sent to this module
-        """
+    def processMove(self, val_move):
+        self.movePiece(val_move)
+        ProM = BaseMsg(content=self.board, mtype="PROCESSED_MOVE")
+        return ProM
+
+    def sendBoard(self):
+        ProM = BaseMsg(content=self.board, mtype="RENDER_BOARD")
+        return ProM
+
+    def handle_msg(self, msg):
+        if msg.mtype == "VALID_MOVE":
+            ProM = self.processMove(msg.content)
+            self.send_to_bus(ProM)
+        elif msg.mtype == "DISPLAY_BOARD":
+            ProM = self.sendBoard()
+            self.send_to_bus(ProM)
+        else:
+            pass
  
     def initBoard(self, gameType="normal"):
         """

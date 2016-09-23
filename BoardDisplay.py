@@ -1,8 +1,45 @@
+import numpy as np
+
 from base_modules import BaseModule
+from base_modules import BaseMsg
 
 class DisplayDriver(BaseModule):
     def __init__(self):
         super(DisplayDriver, self).__init__()
+        self.name = "Display"
+
+        self.pieceDict = {
+              0: ".", 1: "P", 2: "N", 
+              3: "B", 4: "R", 5: "Q",
+              6: "K", -1: "o", -2: "n", 
+              -3: "b", -4: "r", -5: "q",
+              -6: "k" }
+
+    def displayMove(self, board, change_read=True):
+        self.board = board
+        self.printBoard()
+        if change_read:
+            DM = BaseMsg(content=True, mtype="READING_STATUS")
+        else:
+            DM = None
+        return DM
+
+    def handle_msg(self, msg):
+        if msg.mtype == "PROCESSED_MOVE":
+            DM = self.displayMove(msg.content)
+            self.send_to_bus(DM)
+        elif msg.mtype == "RENDER_BOARD":
+            DM = self.displayMove(msg.content, change_read=False)
+        else:
+            pass
+
+    def trPiece(self, piece):
+        """
+        Helper function for translating the chess pieces. Meant to be 
+        used for function "map" in order to convert from index to piece.
+
+        """
+        return self.pieceDict[piece]
 
     def printBoard(self):
         """

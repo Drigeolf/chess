@@ -1,8 +1,38 @@
 from base_modules import BaseModule
+from base_modules import BaseMsg
 
 class MoveParser(BaseModule):
     def __init__(self):
         super(MoveParser, self).__init__()
+        self.name = "Parser"
+        # Parser related
+        self.moveDict = { 
+             "a": 0, "b": 1, "c": 2, 
+             "d": 3, "e": 4, "f": 5, 
+             "g": 6, "h": 7, "A": 0, 
+             "B": 1, "C": 2, "D": 3, 
+             "E": 4, "F": 5, "G": 6, 
+             "H": 7, "1": 0, "2": 1, 
+             "3": 2, "4": 3, "5": 4, 
+             "6": 5, "7": 6, "8": 7 }
+        self.pieceDict = {
+              0: ".", 1: "P", 2: "N", 
+              3: "B", 4: "R", 5: "Q",
+              6: "K", -1: "o", -2: "n", 
+              -3: "b", -4: "r", -5: "q",
+              -6: "k" }
+
+    def processMove(self, inp_str):
+        pMove = self.parseMove(inp_str)
+        MM = BaseMsg(content=pMove, mtype="PARSED_MOVE")
+        return MM
+
+    def handle_msg(self, msg):
+        if msg.mtype == "READ_INPUT":
+            MM = self.processMove(msg.content)
+            self.send_to_bus(MM)
+        else:
+            pass
 
     def parseMove(self, move, notation="longAlg"):
         """
