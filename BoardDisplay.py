@@ -15,13 +15,20 @@ class DisplayDriver(BaseModule):
               -3: "b", -4: "r", -5: "q",
               -6: "k" }
 
-    def displayMove(self, board, change_read=True):
-        self.board = board
-        self.printBoard()
+    def displayMove(self, content, change_read=True):
+        self.board, turn = content
         if change_read:
             DM = BaseMsg(content=True, mtype="READING_STATUS")
         else:
             DM = None
+
+        if not turn:
+            print("###################################")        
+            print("#####   Whites turn to play   #####")
+        else:
+            print("###################################")        
+            print("#####   Blacks turn to play   #####")
+        self.printBoard()
         return DM
 
     def handle_msg(self, msg):
@@ -52,8 +59,8 @@ class DisplayDriver(BaseModule):
         """
         flatBoard = np.array(map(self.trPiece, self.board.flatten()))
         strBoard = flatBoard.reshape((8,8))
-        print("Current Board State")
-        print("")        
+        #print("Current Board State")
+        print("###################################")        
         print("   --------------------------")
         print( " 8 | {7}  {6}  {5}  {4}  {3}  {2}  {1}  {0} |".format(*strBoard[7][::-1])) 
         print( " 7 | {7}  {6}  {5}  {4}  {3}  {2}  {1}  {0} |".format(*strBoard[6][::-1])) 
@@ -66,3 +73,4 @@ class DisplayDriver(BaseModule):
         print("   --------------------------")
         print( "     {0}  {1}  {2}  {3}  {4}  {5}  {6}  {7}  "\
                      .format(*['A','B','C','D','E','F','G','H',]))
+        print("###################################")        

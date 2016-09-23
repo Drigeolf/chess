@@ -19,3 +19,6 @@ class MainBus(BaseModule):
             #print("Sending msg to: %s"%module)
             #print("#########")
             self.send(msg, self.att_modules[module])
+
+    def get_module(self, module_name):
+        return self.att_modules[module_name]

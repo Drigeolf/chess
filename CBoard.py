@@ -66,11 +66,11 @@ class CBoard(BaseModule):
 
     def processMove(self, val_move):
         self.movePiece(val_move)
-        ProM = BaseMsg(content=self.board, mtype="PROCESSED_MOVE")
+        ProM = BaseMsg(content=(self.board, self.turn), mtype="PROCESSED_MOVE")
         return ProM
 
     def sendBoard(self):
-        ProM = BaseMsg(content=self.board, mtype="RENDER_BOARD")
+        ProM = BaseMsg(content=(self.board, self.turn), mtype="RENDER_BOARD")
         return ProM
 
     def handle_msg(self, msg):

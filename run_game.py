@@ -19,6 +19,8 @@ MB.connect_module(MParse)
 MB.connect_module(Ref)
 MB.connect_module(Inp)
 
+# Need to figure out a more elegant way of sorting this out
+# possibly the "evaluate now" thing that the article mentioned
 print("New game starting!")
 MB.msg_q.append(BaseMsg(mtype="DISPLAY_BOARD"))
 while len(MB.msg_q) > 0:
