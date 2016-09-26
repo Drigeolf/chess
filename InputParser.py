@@ -1,5 +1,5 @@
 from base_modules import BaseModule
-from msgs import ParsedMove, ReadCommand
+from msgs import ParsedMove, InvalidCommand, QuitGame
 
 class InputParser(BaseModule):
     def __init__(self):
@@ -26,9 +26,9 @@ class InputParser(BaseModule):
         # Let's first confirm that it's an actual move
         try:
             pMove = self.parseMove(inp_str)
-            MM = ParsedMove(content=pMove)
+            MM = ParsedMove(content=pMove, raw_text=inp_str)
         except:
-            MM = ReadCommand(content=inp_str)
+            MM = self.parseCommand(inp_str)
         return MM
 
     def handle_msg(self, msg):
@@ -37,6 +37,14 @@ class InputParser(BaseModule):
             self.send_to_bus(MM)
         else:
             pass
+
+    def parseCommand(self, cmd):
+        if cmd == "exit" or cmd =="quit":
+            MM = QuitGame(content=True)
+        else:
+            MM = InvalidCommand(content=True)
+        return MM
+            
 
     def parseMove(self, move, notation="longAlg"):
         """
@@ -67,7 +75,7 @@ class InputParser(BaseModule):
         try:
             return self.moveDict[move]
         except KeyError:
-            print("The move not in dictionary: %s"%move)
+            #print("The move not in dictionary, not a valid move: %s"%move)
             raise
     
     def trPiece(self, piece):
@@ -76,7 +84,11 @@ class InputParser(BaseModule):
         used for function "map" in order to convert from index to piece.
 
         """
-        return self.pieceDict[piece]
+        try:
+            return self.pieceDict[piece]
+        except KeyError:
+            #print("The piece not in dictionary, not a valid piece: %s"%piece)
+            raise
             
     def parseLongAlg(self, move):
         """
@@ -102,9 +114,15 @@ class InputParser(BaseModule):
         start, end = move[0:2], move[2:4]
         
         assert len(start) == 2, "Move description is wrong: %s"%(start)
-        s_col, s_row = map(self.trChar, [start[0], start[1]])
-        
+        try:
+            s_col, s_row = map(self.trChar, [start[0], start[1]])
+        except KeyError:
+            raise
+
         assert len(end) == 2, "Move description is wrong: %s"%(end)
-        e_col, e_row = map(self.trChar, [end[0], end[1]])
+        try:
+            e_col, e_row = map(self.trChar, [end[0], end[1]])
+        except KeyError:
+            raise
         
         return ( (s_row, s_col), (e_row, e_col) )

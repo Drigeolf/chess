@@ -29,7 +29,6 @@ class ParsedMove(BaseMsg):
         self.raw_text = raw_text
         self.mtype = mtype
 
-
 class ValidMove(BaseMsg):
     '''
     Msg from the Referee, this is the move that is validated and ready to be passed
@@ -38,6 +37,30 @@ class ValidMove(BaseMsg):
     def __init__(self, content=None, mtype='VALID_MOVE', raw_text=''):
         self.content = content
         self.raw_text = raw_text
+        self.mtype = mtype
+
+class InvalidMove(BaseMsg):
+    '''
+    Invalid move command 
+    '''
+    def __init__(self, content=None, mtype='INVALID_MOVE', raw_text=''):
+        self.content = content
+        self.mtype = mtype
+
+class InvalidCommand(BaseMsg):
+    '''
+    Invalid command 
+    '''
+    def __init__(self, content=None, mtype='INVALID_COMMAND', raw_text=''):
+        self.content = content
+        self.mtype = mtype
+
+class QuitGame(BaseMsg):
+    '''
+    Command to quit the game
+    '''
+    def __init__(self, content=None, mtype='QUIT_GAME'):
+        self.content = content
         self.mtype = mtype
 
 class ProcessedMove(BaseMsg):
@@ -65,5 +88,14 @@ class DisplayBoard(BaseMsg):
     board to the player, w/o making a move
     '''
     def __init__(self, content=None, mtype='DISPLAY_BOARD'):
+        self.content = content
+        self.mtype = mtype
+
+class RenderBoard(BaseMsg):
+    '''
+    Msg that can be used to display the board, it's read by board class to signal the need to show the 
+    board to the player, w/o making a move
+    '''
+    def __init__(self, content=None, mtype='RENDER_BOARD'):
         self.content = content
         self.mtype = mtype

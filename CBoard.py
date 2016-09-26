@@ -5,7 +5,7 @@
 
 import numpy as np
 from base_modules import BaseModule
-from base_modules import BaseMsg
+from msgs import ProcessedMove, RenderBoard
  
 class CBoard(BaseModule):
     """
@@ -46,7 +46,8 @@ class CBoard(BaseModule):
         self.threp = threp
         self.move50 = move50
         self.check = check 
-        self.history = []
+        self.move_history = []
+        self.inp_history = []
         self.moveDict = { 
              "a": 0, "b": 1, "c": 2, 
              "d": 3, "e": 4, "f": 5, 
@@ -67,20 +68,33 @@ class CBoard(BaseModule):
 
     def processMove(self, val_move):
         self.movePiece(val_move)
-        ProM = BaseMsg(content=(self.board, self.turn), mtype="PROCESSED_MOVE")
+        ProM = ProcessedMove(content=(self.board, self.turn))
         return ProM
 
+    def add_to_history(self, move):
+        content, inp = move
+        if not self.turn:
+            self.move_history.append((content, None))
+        else:
+            prev_move = self.move_history.pop(-1)
+            self.move_history.append((prev_move[0], content))
+        self.inp_history.append(inp)
+
     def sendBoard(self):
-        ProM = BaseMsg(content=(self.board, self.turn), mtype="RENDER_BOARD")
+        ProM = RenderBoard(content=(self.board, self.turn))
         return ProM
 
     def handle_msg(self, msg):
         if msg.mtype == "VALID_MOVE":
+            self.add_to_history((msg.content, msg.raw_text))
             ProM = self.processMove(msg.content)
             self.send_to_bus(ProM)
         elif msg.mtype == "DISPLAY_BOARD":
             ProM = self.sendBoard()
             self.send_to_bus(ProM)
+        elif msg.mtype == "QUIT_GAME":
+            print("Printing history before quitting")
+            print(",".join(self.inp_history))
         else:
             pass
  

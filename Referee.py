@@ -5,7 +5,7 @@
 
 import numpy as np
 from base_modules import BaseModule 
-from base_modules import BaseMsg
+from msgs import ValidMove, InvalidMove
  
 class CRef(BaseModule):
     """
@@ -16,7 +16,6 @@ class CRef(BaseModule):
     def __init__(self):
         super(CRef,self).__init__()
         self.name = "Referee"
-        self.running = True
 
     def get_board_state(self):
         # ensure we have the board
@@ -33,10 +32,9 @@ class CRef(BaseModule):
         mvCheck = self.movement_check(inp_move, stPiece)
         # 
         if stCheck and mvCheck:
-            PM = BaseMsg(content=inp_move, mtype="VALID_MOVE")
+            PM = ValidMove(content=inp_move)
         else:
-            print("Invalid move inputted, try again.")
-            PM = BaseMsg(content=True, mtype="READING_STATUS")
+            PM = InvalidMove(content=True)
         return PM
 
     def check_starting_piece(self, piece):
@@ -177,12 +175,10 @@ class CRef(BaseModule):
         st1, st2 = st
         fn1, fn2 = fn
 
-        
-
-
     def handle_msg(self, msg):
         if msg.mtype == "PARSED_MOVE":
             PM = self.validateInput(msg.content)
+            PM.raw_text = msg.raw_text
             self.send_to_bus(PM)
         else:
             pass
