@@ -1,7 +1,7 @@
 from CBoard import CBoard
 from MainBus import MainBus
 from BoardDisplay import DisplayDriver
-from MoveParser import MoveParser
+from InputParser import InputParser
 from InputReader import InputReader
 from Referee import CRef
 from base_modules import BaseMsg
@@ -9,13 +9,13 @@ from base_modules import BaseMsg
 MB = MainBus()
 CB = CBoard()
 BDisp = DisplayDriver()
-MParse = MoveParser()
+IParse = InputParser()
 Ref = CRef()
 Inp = InputReader()
 
 MB.connect_module(CB)
 MB.connect_module(BDisp)
-MB.connect_module(MParse)
+MB.connect_module(IParse)
 MB.connect_module(Ref)
 MB.connect_module(Inp)
 
@@ -31,7 +31,7 @@ while len(MB.msg_q) > 0:
 while Ref.running:
     MB.run()
     Inp.run()
-    MParse.run()
+    IParse.run()
     Ref.run()
     CB.run()
     BDisp.run()

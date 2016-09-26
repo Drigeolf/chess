@@ -37,7 +37,7 @@ class BaseModule(object):
             curr_msg = self.msg_q.pop(0)
             self.handle_msg(curr_msg)
 
-class BaseMsg:
+class BaseMsg(object):
     '''
     A message class is only an object with a specific message type 
     and some attributes so that the target module knows what to do 

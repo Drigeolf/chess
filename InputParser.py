@@ -1,10 +1,10 @@
 from base_modules import BaseModule
-from base_modules import BaseMsg
+from msgs import ParsedMove, ReadCommand
 
-class MoveParser(BaseModule):
+class InputParser(BaseModule):
     def __init__(self):
-        super(MoveParser, self).__init__()
-        self.name = "Parser"
+        super(InputParser, self).__init__()
+        self.name = "InputParser"
         # Parser related
         self.moveDict = { 
              "a": 0, "b": 1, "c": 2, 
@@ -22,14 +22,18 @@ class MoveParser(BaseModule):
               -3: "b", -4: "r", -5: "q",
               -6: "k" }
 
-    def processMove(self, inp_str):
-        pMove = self.parseMove(inp_str)
-        MM = BaseMsg(content=pMove, mtype="PARSED_MOVE")
+    def processInput(self, inp_str):
+        # Let's first confirm that it's an actual move
+        try:
+            pMove = self.parseMove(inp_str)
+            MM = ParsedMove(content=pMove)
+        except:
+            MM = ReadCommand(content=inp_str)
         return MM
 
     def handle_msg(self, msg):
         if msg.mtype == "READ_INPUT":
-            MM = self.processMove(msg.content)
+            MM = self.processInput(msg.content)
             self.send_to_bus(MM)
         else:
             pass
