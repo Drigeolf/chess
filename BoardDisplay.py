@@ -1,7 +1,7 @@
 import numpy as np
 
 from base_modules import BaseModule
-from base_modules import BaseMsg
+from msgs import ReadingStatus
 
 class DisplayDriver(BaseModule):
     def __init__(self):
@@ -18,7 +18,7 @@ class DisplayDriver(BaseModule):
     def displayMove(self, content, change_read=True):
         self.board, turn = content
         if change_read:
-            DM = BaseMsg(content=True, mtype="READING_STATUS")
+            DM = ReadingStatus(content=True)
         else:
             DM = None
 

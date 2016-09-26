@@ -5,7 +5,7 @@ from InputParser import InputParser
 from InputReader import InputReader
 from GameState import GameState
 from Referee import CRef
-from base_modules import BaseMsg
+from msgs import DisplayBoard
 import sys
 
 MB = MainBus()
@@ -26,7 +26,7 @@ MB.connect_module(GState)
 # Need to figure out a more elegant way of sorting this out
 # possibly the "evaluate now" thing that the article mentioned
 print("New game starting!")
-MB.msg_q.append(BaseMsg(mtype="DISPLAY_BOARD"))
+MB.msg_q.append(DisplayBoard())
 while len(MB.msg_q) > 0:
     MB.run()
     CB.run()
