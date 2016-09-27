@@ -11,10 +11,11 @@ TODO:
 
 1) Save/load and output in various standard formats 
 
-2) Menus! Single player, multi player and settings menus
+2) Some basic menu functionality in place, need a more robust system 
 
-3) Hook for future AI 
+3) Hook for future AI
 
 4) Referee needs to be finished and debugged (most work needed here)
 
-5) Once all in place, start the AI
+5) Need to add player objects, tie the input system to the player, this will also allow 
+for the AI hook
