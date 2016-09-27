@@ -1,3 +1,6 @@
+#!/usr/bin/env python
+# -*- coding: utf8 -*-
+
 import numpy as np
 
 from base_modules import BaseModule
@@ -48,12 +51,20 @@ class BoardDisplay(BaseModule):
         self.name = "BoardDisplay"
         self.DisplayDriver = driver
 
+        #try:
         self.pieceDict = {
-              0: ".", 1: "P", 2: "N", 
-              3: "B", 4: "R", 5: "Q",
-              6: "K", -1: "o", -2: "n", 
-              -3: "b", -4: "r", -5: "q",
-              -6: "k" }
+              0: ".", 1: u'\u2659', 2: u'\u2658', 
+              3: u'\u2657', 4: u'\u2656', 5: u'\u2655',
+              6: u'\u2654', -1: u'\u265F', -2: u'\u265E', 
+              -3: u'\u265D', -4: u'\u265C', -5: u'\u265B',
+              -6: u'\u265A'}
+        #except:
+        #    self.pieceDict = {
+        #          0: ".", 1: "P", 2: "N", 
+        #          3: "B", 4: "R", 5: "Q",
+        #          6: "K", -1: "o", -2: "n", 
+        #          -3: "b", -4: "r", -5: "q",
+        #          -6: "k" }
 
     def displayMove(self, content, change_read=True):
         self.board, turn = content
@@ -103,14 +114,14 @@ class BoardDisplay(BaseModule):
         #print("Current Board State")
         print("###################################")        
         print("   --------------------------")
-        print( " 8 | {7}  {6}  {5}  {4}  {3}  {2}  {1}  {0} |".format(*strBoard[7][::-1])) 
-        print( " 7 | {7}  {6}  {5}  {4}  {3}  {2}  {1}  {0} |".format(*strBoard[6][::-1])) 
-        print( " 6 | {7}  {6}  {5}  {4}  {3}  {2}  {1}  {0} |".format(*strBoard[5][::-1])) 
-        print( " 5 | {7}  {6}  {5}  {4}  {3}  {2}  {1}  {0} |".format(*strBoard[4][::-1])) 
-        print( " 4 | {7}  {6}  {5}  {4}  {3}  {2}  {1}  {0} |".format(*strBoard[3][::-1])) 
-        print( " 3 | {7}  {6}  {5}  {4}  {3}  {2}  {1}  {0} |".format(*strBoard[2][::-1])) 
-        print( " 2 | {7}  {6}  {5}  {4}  {3}  {2}  {1}  {0} |".format(*strBoard[1][::-1])) 
-        print( " 1 | {7}  {6}  {5}  {4}  {3}  {2}  {1}  {0} |".format(*strBoard[0][::-1])) 
+        print( u" 8 | {7}  {6}  {5}  {4}  {3}  {2}  {1}  {0} |".format(*strBoard[7][::-1])) 
+        print( u" 7 | {7}  {6}  {5}  {4}  {3}  {2}  {1}  {0} |".format(*strBoard[6][::-1])) 
+        print( u" 6 | {7}  {6}  {5}  {4}  {3}  {2}  {1}  {0} |".format(*strBoard[5][::-1])) 
+        print( u" 5 | {7}  {6}  {5}  {4}  {3}  {2}  {1}  {0} |".format(*strBoard[4][::-1])) 
+        print( u" 4 | {7}  {6}  {5}  {4}  {3}  {2}  {1}  {0} |".format(*strBoard[3][::-1])) 
+        print( u" 3 | {7}  {6}  {5}  {4}  {3}  {2}  {1}  {0} |".format(*strBoard[2][::-1])) 
+        print( u" 2 | {7}  {6}  {5}  {4}  {3}  {2}  {1}  {0} |".format(*strBoard[1][::-1])) 
+        print( u" 1 | {7}  {6}  {5}  {4}  {3}  {2}  {1}  {0} |".format(*strBoard[0][::-1])) 
         print("   --------------------------")
         print( "     {0}  {1}  {2}  {3}  {4}  {5}  {6}  {7}  "\
                      .format(*['A','B','C','D','E','F','G','H',]))
