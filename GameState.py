@@ -1,5 +1,5 @@
 from base_modules import BaseModule
-from msgs import ReadingStatus, RenderMenu, InvalidCommand, DisplayBoard
+from msgs import ReadingStatus, RenderMenu, InvalidCommand, DisplayBoard, StartGame
 
 class GameState(BaseModule):
     def __init__(self):
@@ -11,12 +11,12 @@ class GameState(BaseModule):
         self.paused = False
         self.players = []
         self.menu_dict = {"MAIN MENU": ["NEW GAME","LOAD GAME","SETTINGS","EXIT GAME"],
-                          "NEW GAME": ["SINGLE PLAYER", "LOCAL MULTI PLAYER"],
+                          "NEW GAME": ["SINGLEPLAYER", "LOCAL MULTIPLAYER"],
                           "LOAD GAME": ["NOT_IMPLEMENTED"], 
                           "SETTINGS": ["NOT_IMPLEMENTED"], 
                           "EXIT GAME": ["QUIT_GAME"], 
-                          "SINGLE PLAYER": ["NOT_IMPLEMENTED"], 
-                          "LOCAL MULTI_PLAYER": ["NEW_LMULTI"]}
+                          "SINGLEPLAYER": ["NOT_IMPLEMENTED"], 
+                          "LOCAL MULTIPLAYER": ["NEW_LMULTI"]}
 
     def handle_msg(self, msg):
         # Handle quitting
@@ -51,6 +51,10 @@ class GameState(BaseModule):
         # some logic here
         if not msg.content:
             return RenderMenu(content=self.menu_state, menu_dict=self.menu_dict, prev_menu=self.menu_state)
+
+        print(msg.content)
+        if self.menu_dict[msg.content] == ["NEW_LMULTI"]:
+            return StartGame()
 
         if (not self.in_game) or self.paused:
             self.prev_menu = self.menu_state

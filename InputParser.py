@@ -23,12 +23,12 @@ class InputParser(BaseModule):
               -3: "b", -4: "r", -5: "q",
               -6: "k" }
         self.menu_dict = {"MAIN MENU": ["NEW GAME","LOAD GAME","SETTINGS","EXIT GAME"],
-                          "NEW GAME": ["SINGLE PLAYER", "LOCAL MULTI PLAYER"],
+                          "NEW GAME": ["SINGLEPLAYER", "LOCAL MULTIPLAYER"],
                           "LOAD GAME": ["NOT_IMPLEMENTED"], 
                           "SETTINGS": ["NOT_IMPLEMENTED"], 
                           "EXIT GAME": ["QUIT_GAME"], 
-                          "SINGLE PLAYER": ["NOT_IMPLEMENTED"], 
-                          "LOCAL MULTI_PLAYER": ["NEW_LMULTI"]}
+                          "SINGLEPLAYER": ["NOT_IMPLEMENTED"], 
+                          "LOCAL MULTIPLAYER": ["NEW_LMULTI"]}
 
     def processInput(self, inp_str):
         # Let's first confirm that it's an actual move
