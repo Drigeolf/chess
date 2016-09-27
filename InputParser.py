@@ -5,6 +5,7 @@ class InputParser(BaseModule):
     def __init__(self):
         super(InputParser, self).__init__()
         self.name = "InputParser"
+        self.in_game = False
         # Parser related
         self.moveDict = { 
              "a": 0, "b": 1, "c": 2, 
@@ -24,27 +25,38 @@ class InputParser(BaseModule):
 
     def processInput(self, inp_str):
         # Let's first confirm that it's an actual move
-        try:
-            pMove = self.parseMove(inp_str)
-            MM = ParsedMove(content=pMove, raw_text=inp_str)
-        except:
-            MM = self.parseCommand(inp_str)
+        if self.in_game:
+            try:
+                pMove = self.parseMove(inp_str)
+                MM = ParsedMove(content=pMove, raw_text=inp_str)
+            except:
+                MM = self.parseCommand(inp_str)
+        else:
+            MM = self.parseMenuCommand(inp_str)
         return MM
 
     def handle_msg(self, msg):
         if msg.mtype == "READ_INPUT":
             MM = self.processInput(msg.content)
             self.send_to_bus(MM)
+        if msg.mtype == "START_GAME":
+            self.in_game = True
         else:
             pass
+
+    def parseMenuCommand(self, cmd):
+        if cmd == "exit" or cmd =="quit":
+            MM = QuitGame()
+        else:
+            MM = InvalidCommand()
+        return MM
 
     def parseCommand(self, cmd):
         if cmd == "exit" or cmd =="quit":
             MM = QuitGame(content=True)
         else:
-            MM = InvalidCommand(content=True)
+            MM = InvalidCommand()
         return MM
-            
 
     def parseMove(self, move, notation="longAlg"):
         """

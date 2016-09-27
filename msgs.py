@@ -99,3 +99,23 @@ class RenderBoard(BaseMsg):
     def __init__(self, content=None, mtype='RENDER_BOARD'):
         self.content = content
         self.mtype = mtype
+
+class RenderMenu(BaseMsg):
+    '''
+    Msg to display the menu. Contains the dictionary of menus and the information about the previous menu 
+    we are coming from, incase we have to return to it
+    '''
+    def __init__(self, content=None, mtype='RENDER_MENU', menu_dict=None, prev_menu=None):
+        self.content = content
+        self.menu_dict = menu_dict
+        self.prev_menu = prev_menu
+        self.mtype = mtype
+
+class StartGame(BaseMsg):
+    '''
+    Msg that can be used to display the board, it's read by board class to signal the need to show the 
+    board to the player, w/o making a move
+    '''
+    def __init__(self, content=None, mtype='START_GAME'):
+        self.content = content
+        self.mtype = mtype
