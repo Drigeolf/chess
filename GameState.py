@@ -1,4 +1,5 @@
 from base_modules import BaseModule
+from Players import HumanPlayer, AIPlayer
 from msgs import ReadingStatus, RenderMenu, InvalidCommand, DisplayBoard, StartGame
 
 class GameState(BaseModule):
@@ -35,6 +36,7 @@ class GameState(BaseModule):
             MM = self.set_menu(msg)
             self.send_to_bus(MM)
         elif msg.mtype == "START_GAME":
+            self.players = msg.players
             self.in_game = True
             self.send_now(DisplayBoard())
             self.send_to_bus(ReadingStatus(content="MOVE"))
@@ -54,7 +56,13 @@ class GameState(BaseModule):
 
         print(msg.content)
         if self.menu_dict[msg.content] == ["NEW_LMULTI"]:
-            return StartGame()
+            Player1 = HumanPlayer()
+            Player2 = HumanPlayer()
+            return StartGame(players=[Player1, Player2])
+        elif self.menu_dict[msg.content] == ["NEW_SINGLE"]:
+            Player1 = HumanPlayer()
+            Player2 = AIPlayer()
+            return StartGame(players=[Player1, Player2])
 
         if (not self.in_game) or self.paused:
             self.prev_menu = self.menu_state

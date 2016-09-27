@@ -128,10 +128,11 @@ class StartGame(BaseMsg):
     Msg that can be used to display the board, it's read by board class to signal the need to show the 
     board to the player, w/o making a move
     '''
-    def __init__(self, content=None, mtype='START_GAME', tmodule="GameState"):
+    def __init__(self, content=None, mtype='START_GAME', tmodule="GameState", players=[]):
         self.content = content
         self.mtype = mtype
-        self.tmodeul = tmodule 
+        self.tmodule = tmodule 
+        self.players = players
 
 class InitGame(BaseMsg):
     '''

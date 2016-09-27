@@ -15,10 +15,9 @@ class DisplayDriver(BaseModule):
     def handle_msg(self, msg):
         # Pass moves to board displayer
         if msg.mtype == "PROCESSED_MOVE":
-            DM = self.BD.handle_msg(msg)
-            self.send_to_bus(DM)
+            self.BD.handle_msg(msg)
         elif msg.mtype == "RENDER_BOARD":
-            DM = self.BD.handle_msg(msg)
+            self.BD.handle_msg(msg)
         elif "RENDER_MENU" in msg.mtype:
             DM = self.menu_display(msg)
             self.send_to_bus(DM)
@@ -66,12 +65,8 @@ class BoardDisplay(BaseModule):
         #          -3: "b", -4: "r", -5: "q",
         #          -6: "k" }
 
-    def displayMove(self, content, change_read=True):
+    def displayMove(self, content):
         self.board, turn = content
-        if change_read:
-            DM = ReadingStatus(content="MOVE")
-        else:
-            DM = None
 
         if not turn:
             print("###################################")        
@@ -80,15 +75,12 @@ class BoardDisplay(BaseModule):
             print("###################################")        
             print("#####   Blacks turn to play   #####")
         self.printBoard()
-        return DM
 
     def handle_msg(self, msg):
         if msg.mtype == "PROCESSED_MOVE":
-            DM = self.displayMove(msg.content)
-            return DM
+            self.displayMove(msg.content)
         elif msg.mtype == "RENDER_BOARD":
-            DM = self.displayMove(msg.content, change_read=False)
-            return DM
+            self.displayMove(msg.content)
         else:
             pass
 

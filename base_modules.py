@@ -57,3 +57,11 @@ class BaseMsg(object):
     def __init__(self, content=None, mtype='BASE'):
         self.mtype = mtype
         self.content = content
+
+class BasePlayer(object):
+    '''
+    A player class, also will allow for future AI hooks
+    '''
+    def __init__(self, input_reader=None, ptype='HUMAN'):
+        self.input_reader = input_reader
+        self.ptype = ptype

@@ -5,7 +5,7 @@
 
 import numpy as np
 from base_modules import BaseModule
-from msgs import ProcessedMove, RenderBoard
+from msgs import ProcessedMove, RenderBoard, ReadingStatus
  
 class CBoard(BaseModule):
     """
@@ -89,9 +89,12 @@ class CBoard(BaseModule):
             self.add_to_history((msg.content, msg.raw_text))
             ProM = self.processMove(msg.content)
             self.send_to_bus(ProM)
+            self.send_to_bus(ReadingStatus(content="MOVE"))
         elif msg.mtype == "DISPLAY_BOARD":
             ProM = self.sendBoard()
             self.send_now(ProM)
+        elif msg.mtype == "START_GAME":
+            self.players = msg.players
         elif msg.mtype == "QUIT_GAME":
             print("Printing history before quitting")
             print(",".join(self.inp_history))
