@@ -1,5 +1,5 @@
 from base_modules import BaseModule
-from msgs import ParsedMove, InvalidCommand, QuitGame
+from msgs import ParsedMove, InvalidCommand, QuitGame, GotoMenu
 
 class InputParser(BaseModule):
     def __init__(self):
@@ -22,6 +22,13 @@ class InputParser(BaseModule):
               6: "K", -1: "o", -2: "n", 
               -3: "b", -4: "r", -5: "q",
               -6: "k" }
+        self.menu_dict = {"MAIN MENU": ["NEW GAME","LOAD GAME","SETTINGS","EXIT GAME"],
+                          "NEW GAME": ["SINGLE PLAYER", "LOCAL MULTI PLAYER"],
+                          "LOAD GAME": ["NOT_IMPLEMENTED"], 
+                          "SETTINGS": ["NOT_IMPLEMENTED"], 
+                          "EXIT GAME": ["QUIT_GAME"], 
+                          "SINGLE PLAYER": ["NOT_IMPLEMENTED"], 
+                          "LOCAL MULTI_PLAYER": ["NEW_LMULTI"]}
 
     def processInput(self, inp_str):
         # Let's first confirm that it's an actual move
@@ -48,7 +55,11 @@ class InputParser(BaseModule):
         if cmd == "exit" or cmd =="quit":
             MM = QuitGame()
         else:
-            MM = InvalidCommand()
+            try:
+                self.menu_dict[cmd]
+                MM = GotoMenu(content=cmd)
+            except KeyError:
+                MM = InvalidCommand()
         return MM
 
     def parseCommand(self, cmd):

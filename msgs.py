@@ -87,29 +87,41 @@ class DisplayBoard(BaseMsg):
     Msg that can be used to display the board, it's read by board class to signal the need to show the 
     board to the player, w/o making a move
     '''
-    def __init__(self, content=None, mtype='DISPLAY_BOARD'):
+    def __init__(self, content=None, mtype='DISPLAY_BOARD', tmodule="Board"):
         self.content = content
         self.mtype = mtype
+        self.tmodule = tmodule
 
 class RenderBoard(BaseMsg):
     '''
     Msg that can be used to display the board, it's read by board class to signal the need to show the 
     board to the player, w/o making a move
     '''
-    def __init__(self, content=None, mtype='RENDER_BOARD'):
+    def __init__(self, content=None, mtype='RENDER_BOARD', tmodule="Display"):
         self.content = content
         self.mtype = mtype
+        self.tmodule = tmodule
 
 class RenderMenu(BaseMsg):
     '''
     Msg to display the menu. Contains the dictionary of menus and the information about the previous menu 
     we are coming from, incase we have to return to it
     '''
-    def __init__(self, content=None, mtype='RENDER_MENU', menu_dict=None, prev_menu=None):
+    def __init__(self, content=None, mtype='RENDER_MENU', menu_dict=None, prev_menu=None, tmodule="Display"):
         self.content = content
         self.menu_dict = menu_dict
         self.prev_menu = prev_menu
         self.mtype = mtype
+        self.tmodule = tmodule
+
+class GotoMenu(BaseMsg):
+    '''
+    Msg to signal GameState to heat to a particular menu
+    '''
+    def __init__(self, content=None, mtype='GOTO_MENU', tmodule="GameState"):
+        self.content = content
+        self.mtype = mtype
+        self.tmodule = tmodule
 
 class StartGame(BaseMsg):
     '''
@@ -119,3 +131,13 @@ class StartGame(BaseMsg):
     def __init__(self, content=None, mtype='START_GAME'):
         self.content = content
         self.mtype = mtype
+
+class InitGame(BaseMsg):
+    '''
+    Msg that can be used to display the board, it's read by board class to signal the need to show the 
+    board to the player, w/o making a move
+    '''
+    def __init__(self, content=None, mtype='INIT_GAME', tmodule="GameState"):
+        self.content = content
+        self.mtype = mtype
+        self.tmodule = tmodule

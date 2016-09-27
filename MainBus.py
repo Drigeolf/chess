@@ -20,5 +20,18 @@ class MainBus(BaseModule):
             #print("#########")
             self.send(msg, self.att_modules[module])
 
+    def handle_msg_now(self, msg, tmodule=None):
+        if tmodule:
+            self.send_now(msg, tmodule)
+        else:
+            for module in self.att_modules.iterkeys():
+                #print("#########")
+                #print("Reading msg type %s"%msg.mtype)
+                #print("Reading msg content")
+                #print(msg.content)
+                #print("Sending msg to: %s"%module)
+                #print("#########")
+                self.send(msg, self.att_modules[module])
+
     def get_module(self, module_name):
         return self.att_modules[module_name]

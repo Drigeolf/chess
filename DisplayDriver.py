@@ -1,7 +1,7 @@
 import numpy as np
 
 from base_modules import BaseModule
-from msgs import ReadingStatus, QuitGame
+from msgs import ReadingStatus, QuitGame, GotoMenu
 
 class DisplayDriver(BaseModule):
     def __init__(self):
@@ -23,63 +23,24 @@ class DisplayDriver(BaseModule):
             pass
 
     def menu_display(self, msg):
-        # We deal with menu displaying here
-        if msg.mtype == "RENDER_MENU":
-            if msg.content == "MAIN_MENU":
-                print("###################################")        
-                print("### Welcome to Chessmasher5000 ####")        
-                print("###################################")        
-                print("## Main Menu ######################")        
-                print("## Type to navigate menus #########")        
-                print("###################################")        
-                print("# New Game ########################")        
-                print("# Load Game #######################")        
-                print("# Settings ########################")        
-                print("# Exit Game #######################")        
-                print("###################################")        
-            elif msg.content == "NEW_GAME":
-                print("###################################")        
-                print("### Welcome to Chessmasher5000 ####")        
-                print("###################################")        
-                print("## New Game #######################")        
-                print("## Type to navigate menus #########")        
-                print("###################################")        
-                print("# Singleplayer ####################")        
-                print("# Local Multiplayer ###############")        
-                print("###################################")        
-            elif msg.content == "LOAD_GAME":
-                print("###################################")        
-                print("### Welcome to Chessmasher5000 ####")        
-                print("###################################")        
-                print("## Load Game ######################")        
-                print("## Type to navigate menus #########")        
-                print("###################################")        
-                print("# NOT IMPLEMENTED YET #############")        
-                print("###################################")        
-                return QuitGame()
-            elif msg.content == "NEW_GAME_SINGLE":
-                print("###################################")        
-                print("### Welcome to Chessmasher5000 ####")        
-                print("###################################")        
-                print("## Singleplayer Game ##############")        
-                print("## Type to navigate menus #########")        
-                print("###################################")        
-                print("# NOT IMPLEMENTED YET #############")        
-                print("###################################")        
-                return QuitGame()
-            elif msg.content == "SETTINGS_MENU":
-                print("###################################")        
-                print("### Welcome to Chessmasher5000 ####")        
-                print("###################################")        
-                print("## Settings #######################")        
-                print("## Type to navigate menus #########")        
-                print("###################################")        
-                print("# NOT IMPLEMENTED YET #############")        
-                print("###################################")        
-                return QuitGame()
-            else:
-                print("Msg type not understood, quitting")
-                return QuitGame()
+        menu_name = msg.content
+        menu_content = msg.menu_dict[menu_name]
+        menu_prev = msg.prev_menu
+        if menu_content[0] == "NOT_IMPLEMENTED":
+            return GotoMenu(content=msg.prev_menu)
+        elif menu_content[0] == "QUIT_GAME":
+            return QuitGame()
+        print("###################################")        
+        print("### Welcome to Chessmasher5000 ####")        
+        print("###################################")        
+        # Print menu name here
+        print("# {0}".format(menu_name))
+        print("## Type to navigate menus #########")        
+        print("###################################")        
+        for elem in menu_content:
+            print("# {0}".format(elem))
+        print("###################################")        
+        return ReadingStatus(content="COMMAND")
 
 class BoardDisplay(BaseModule):
     def __init__(self, driver=None):
@@ -97,7 +58,7 @@ class BoardDisplay(BaseModule):
     def displayMove(self, content, change_read=True):
         self.board, turn = content
         if change_read:
-            DM = ReadingStatus(content=True)
+            DM = ReadingStatus(content="MOVE")
         else:
             DM = None
 

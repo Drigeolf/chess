@@ -20,7 +20,18 @@ class BaseModule(object):
         self.name = "Base"
 
     def send(self, msg, tmodule):
+        #print("me: %s"%self.name)
+        #print("Sending msg to module")
+        #print(msg, tmodule)
         tmodule.msg_q.append(msg)
+
+    def send_now(self, msg):
+        if self.name != "MainBus":
+            MB = self.att_modules["MainBus"]
+            modules = MB.att_modules
+        else: 
+            modules = self.att_modules
+        modules[msg.tmodule].handle_msg(msg)
 
     def send_to_bus(self, msg):
         self.send(msg, self.att_modules["MainBus"])

@@ -91,7 +91,7 @@ class CBoard(BaseModule):
             self.send_to_bus(ProM)
         elif msg.mtype == "DISPLAY_BOARD":
             ProM = self.sendBoard()
-            self.send_to_bus(ProM)
+            self.send_now(ProM)
         elif msg.mtype == "QUIT_GAME":
             print("Printing history before quitting")
             print(",".join(self.inp_history))
