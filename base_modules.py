@@ -62,6 +62,6 @@ class BasePlayer(object):
     '''
     A player class, also will allow for future AI hooks
     '''
-    def __init__(self, input_reader=None, ptype='HUMAN'):
-        self.input_reader = input_reader
+    def __init__(self, ptype='HUMAN', turn=False):
         self.ptype = ptype
+        self.turn = turn

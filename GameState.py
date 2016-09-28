@@ -39,7 +39,6 @@ class GameState(BaseModule):
             self.players = msg.players
             self.in_game = True
             self.send_now(DisplayBoard())
-            self.send_to_bus(ReadingStatus(content="MOVE"))
         elif msg.mtype == "INIT_GAME":
             # Initialize game, we are in menus now
             if self.menu_state != "MAIN MENU":
@@ -54,13 +53,13 @@ class GameState(BaseModule):
         if not msg.content:
             return RenderMenu(content=self.menu_state, menu_dict=self.menu_dict, prev_menu=self.menu_state)
 
-        print(msg.content)
         if self.menu_dict[msg.content] == ["NEW_LMULTI"]:
             Player1 = HumanPlayer()
             Player2 = HumanPlayer()
             return StartGame(players=[Player1, Player2])
         elif self.menu_dict[msg.content] == ["NEW_SINGLE"]:
-            Player1 = HumanPlayer()
+            import random
+            Player1 = HumanPlayer(turn=(random.randint(0,100))%2)
             Player2 = AIPlayer()
             return StartGame(players=[Player1, Player2])
 

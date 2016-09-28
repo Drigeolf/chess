@@ -5,7 +5,7 @@ from InputParser import InputParser
 from InputReader import InputReader
 from GameState import GameState
 from Referee import CRef
-from msgs import DisplayBoard, InitGame
+from msgs import InitGame
 
 class GameInit(object):
     def __init__(self):
