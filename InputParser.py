@@ -30,28 +30,30 @@ class InputParser(BaseModule):
                           "SINGLEPLAYER": ["NOT_IMPLEMENTED"], 
                           "LOCAL MULTIPLAYER": ["NEW_LMULTI"]}
 
-    def processInput(self, inp_str):
+    def processInput(self, msg):
+        inp_str = msg.content
         # Let's first confirm that it's an actual move
         if self.in_game:
             try:
                 pMove = self.parseMove(inp_str)
-                MM = ParsedMove(content=pMove, raw_text=inp_str)
+                MM = ParsedMove(content=pMove, raw_text=inp_str, player=msg.player)
             except:
-                MM = self.parseCommand(inp_str)
+                MM = self.parseCommand(msg)
         else:
-            MM = self.parseMenuCommand(inp_str)
+            MM = self.parseMenuCommand(msg)
         return MM
 
     def handle_msg(self, msg):
         if msg.mtype == "READ_INPUT":
-            MM = self.processInput(msg.content)
+            MM = self.processInput(msg)
             self.send_to_bus(MM)
         if msg.mtype == "START_GAME":
             self.in_game = True
         else:
             pass
 
-    def parseMenuCommand(self, cmd):
+    def parseMenuCommand(self, msg):
+        cmd = msg.content
         if cmd == "exit" or cmd =="quit":
             MM = QuitGame()
         else:
@@ -62,11 +64,12 @@ class InputParser(BaseModule):
                 MM = InvalidCommand()
         return MM
 
-    def parseCommand(self, cmd):
+    def parseCommand(self, msg):
+        cmd = msg.content
         if cmd == "exit" or cmd =="quit":
             MM = QuitGame(content=True)
         else:
-            MM = InvalidCommand()
+            MM = InvalidCommand(player=msg.player)
         return MM
 
     def parseMove(self, move, notation="longAlg"):

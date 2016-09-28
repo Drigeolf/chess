@@ -6,24 +6,32 @@ class InputReader(BaseModule):
         super(InputReader, self).__init__()
         self.name = "InpReader"
         self.reading = False
+        self.reading_for = None
         # Parser related
 
     def handle_msg(self, msg):
         if msg.mtype == "READING_STATUS":
-            self.set_status(msg.content)
+            if msg.player:
+                self.set_status(msg.content, player=msg.player)
+            else:
+                self.set_status(msg.content)
         else:
             pass
 
-    def set_status(self, status):
+    def set_status(self, status, player=None):
         self.reading = status
+        if player:
+            self.reading_for = player
+        else:
+            self.reading_for = None
 
     def run(self):
         while len(self.msg_q) > 0:
             curr_msg = self.msg_q.pop(0)
             self.handle_msg(curr_msg)
-        if self.reading == "MOVE":
+        if self.reading == "MOVE" and self.reading_for:
           inp = raw_input("Plase enter a move: \n")
-          IM = ReadInput(content=inp)
+          IM = ReadInput(content=inp, player=self.reading_for)
           self.reading = False
           self.send_to_bus(IM)
         elif self.reading == "COMMAND":

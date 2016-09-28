@@ -6,9 +6,10 @@ class ReadInput(BaseMsg):
     This is the msg from the input reader, passing the input entered by the player
     to the main bus. Text is the content 
     '''
-    def __init__(self, content=None, mtype='READ_INPUT'):
+    def __init__(self, content=None, mtype='READ_INPUT', player=None):
         self.content = content
         self.mtype = mtype
+        self.player = player
 
 class ReadCommand(BaseMsg):
     '''
@@ -24,36 +25,41 @@ class ParsedMove(BaseMsg):
     Msg from the move parser, returning the move in a way the board/referee will understand.
     Also returns the original raw text.
     '''
-    def __init__(self, content=None, mtype='PARSED_MOVE', raw_text=''):
+    def __init__(self, content=None, mtype='PARSED_MOVE', raw_text='', player=None):
         self.content = content
         self.raw_text = raw_text
         self.mtype = mtype
+        self.player = player
 
 class ValidMove(BaseMsg):
     '''
     Msg from the Referee, this is the move that is validated and ready to be passed
     to board for processing.
     '''
-    def __init__(self, content=None, mtype='VALID_MOVE', raw_text=''):
+    def __init__(self, content=None, mtype='VALID_MOVE', raw_text='', player=None):
         self.content = content
         self.raw_text = raw_text
         self.mtype = mtype
+        self.player = player
 
 class InvalidMove(BaseMsg):
     '''
     Invalid move command 
     '''
-    def __init__(self, content=None, mtype='INVALID_MOVE', raw_text=''):
+    def __init__(self, content=None, mtype='INVALID_MOVE', raw_text='', player=None):
         self.content = content
         self.mtype = mtype
+        self.player = player
 
 class InvalidCommand(BaseMsg):
     '''
     Invalid command 
     '''
-    def __init__(self, content=None, mtype='INVALID_COMMAND', raw_text=''):
+    def __init__(self, content=None, mtype='INVALID_COMMAND', raw_text='', player=None):
         self.content = content
         self.mtype = mtype
+        self.raw_text = raw_text
+        self.player = player
 
 class QuitGame(BaseMsg):
     '''
@@ -68,19 +74,21 @@ class ProcessedMove(BaseMsg):
     Msg from the board, indicating a move is processed after validation, also returns the board state
     in it's content. This is used for rendering the board after making the move. 
     '''
-    def __init__(self, content=None, mtype='PROCESSED_MOVE'):
+    def __init__(self, content=None, mtype='PROCESSED_MOVE', player=None, turn=None):
         self.content = content
         self.mtype = mtype
-
+        self.player = player
+        self.turn = turn
 
 class ReadingStatus(BaseMsg):
     '''
     Msg that can be used to turn input reading on and off. True in content indicates that the system
     is ready to take in input, false indicates otherwise.
     '''
-    def __init__(self, content=None, mtype='READING_STATUS'):
+    def __init__(self, content=None, mtype='READING_STATUS', player=None):
         self.content = content
         self.mtype = mtype
+        self.player = player
 
 class DisplayBoard(BaseMsg):
     '''

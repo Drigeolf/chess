@@ -23,7 +23,8 @@ class CRef(BaseModule):
         self.turn = self.board_obj.turn
         self.pieceDict = self.board_obj.pieceDict
 
-    def validateInput(self, inp_move):
+    def validateInput(self, msg):
+        inp_move = msg.content
         self.get_board_state()
         # Check to see if correct piece is moving
         stPiece = self.board_obj.getSquare(inp_move[0])
@@ -34,7 +35,7 @@ class CRef(BaseModule):
         if stCheck and mvCheck:
             PM = ValidMove(content=inp_move)
         else:
-            PM = InvalidMove(content=True)
+            PM = InvalidMove(content=True, player=msg.player)
         return PM
 
     def check_starting_piece(self, piece):
@@ -177,7 +178,7 @@ class CRef(BaseModule):
 
     def handle_msg(self, msg):
         if msg.mtype == "PARSED_MOVE":
-            PM = self.validateInput(msg.content)
+            PM = self.validateInput(msg)
             PM.raw_text = msg.raw_text
             self.send_to_bus(PM)
         else:

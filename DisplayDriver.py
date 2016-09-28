@@ -16,11 +16,12 @@ class DisplayDriver(BaseModule):
         # Pass moves to board displayer
         if msg.mtype == "PROCESSED_MOVE":
             self.BD.handle_msg(msg)
+            msg.player.read_input()
         elif msg.mtype == "RENDER_BOARD":
             self.BD.handle_msg(msg)
         elif "RENDER_MENU" in msg.mtype:
-            DM = self.menu_display(msg)
-            self.send_to_bus(DM)
+            self.menu_display(msg)
+            self.send_to_bus(ReadingStatus(content="COMMAND"))
         else:
             pass
 
@@ -42,7 +43,6 @@ class DisplayDriver(BaseModule):
         for elem in menu_content:
             print("# {0}".format(elem))
         print("###################################")        
-        return ReadingStatus(content="COMMAND")
 
 class BoardDisplay(BaseModule):
     def __init__(self, driver=None):

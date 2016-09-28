@@ -27,10 +27,13 @@ class GameState(BaseModule):
         # Handle invalid stuff
         elif msg.mtype == "INVALID_COMMAND":
             print("Invalid command, try again.")
-            self.send_to_bus(ReadingStatus(content="COMMAND"))
+            if msg.player:
+                msg.player.read_input()
+            else:
+                self.send_to_bus(ReadingStatus(content="COMMAND"))
         elif msg.mtype == "INVALID_MOVE":
             print("Invalid move, try again.")
-            self.send_to_bus(ReadingStatus(content="MOVE"))
+            msg.player.read_input()
         # Handle menus
         elif msg.mtype == "GOTO_MENU":
             MM = self.set_menu(msg)
@@ -44,7 +47,6 @@ class GameState(BaseModule):
             if self.menu_state != "MAIN MENU":
                 self.menu_state = "MAIN MENU"
             self.send_now(RenderMenu(content=self.menu_state, menu_dict=self.menu_dict, prev_menu=self.menu_state))
-            self.send_to_bus(ReadingStatus(content="COMMAND"))
         else:
             pass
 
@@ -54,13 +56,18 @@ class GameState(BaseModule):
             return RenderMenu(content=self.menu_state, menu_dict=self.menu_dict, prev_menu=self.menu_state)
 
         if self.menu_dict[msg.content] == ["NEW_LMULTI"]:
-            Player1 = HumanPlayer()
-            Player2 = HumanPlayer()
+            import random
+            t1 = random.randint(0,100)%2 
+            t2 = (t1+1)%2
+            Player1 = HumanPlayer(turn=t1)
+            Player2 = HumanPlayer(turn=t2)
             return StartGame(players=[Player1, Player2])
         elif self.menu_dict[msg.content] == ["NEW_SINGLE"]:
             import random
-            Player1 = HumanPlayer(turn=(random.randint(0,100))%2)
-            Player2 = AIPlayer()
+            t1 = random.randint(0,100)%2 
+            t2 = (t1+1)%2
+            Player1 = HumanPlayer(turn=t1)
+            Player2 = AIPlayer(turn=t2)
             return StartGame(players=[Player1, Player2])
 
         if (not self.in_game) or self.paused:

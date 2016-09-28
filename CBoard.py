@@ -66,9 +66,9 @@ class CBoard(BaseModule):
         # At least for now just initialize the board
         self.initBoard()
 
-    def processMove(self, val_move):
+    def processMove(self, val_move, player):
         self.movePiece(val_move)
-        ProM = ProcessedMove(content=(self.board, self.turn))
+        ProM = ProcessedMove(content=(self.board, self.turn), player=self.in_turn())
         return ProM
 
     def add_to_history(self, move):
@@ -84,12 +84,14 @@ class CBoard(BaseModule):
         ProM = RenderBoard(content=(self.board, self.turn))
         return ProM
 
+    def in_turn(self):
+        return filter(lambda x: x.turn == self.turn, self.players)[0]
+
     def handle_msg(self, msg):
         if msg.mtype == "VALID_MOVE":
             self.add_to_history((msg.content, msg.raw_text))
-            ProM = self.processMove(msg.content)
+            ProM = self.processMove(msg.content, msg.player)
             self.send_to_bus(ProM)
-            self.send_to_bus(ReadingStatus(content="MOVE"))
         elif msg.mtype == "DISPLAY_BOARD":
             ProM = self.sendBoard()
             self.send_now(ProM)
@@ -104,6 +106,11 @@ class CBoard(BaseModule):
             print(",".join(self.inp_history))
         else:
             pass
+
+    def add_players(self, players):
+        self.players = players
+        for player in players:
+            player.board = self
  
     def initBoard(self, gameType="normal"):
         """

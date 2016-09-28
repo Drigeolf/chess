@@ -44,9 +44,16 @@ class BaseModule(object):
         module.att_modules[self.name] = self
 
     def run(self):
+        #print("me: %s"%self.name)
+        #print("Processing queue")
+        #print(self.msg_q)
         while len(self.msg_q) > 0:
             curr_msg = self.msg_q.pop(0)
+            #print("current_msg")
+            #print(curr_msg.content)
             self.handle_msg(curr_msg)
+            #print("after handling")
+            #print(self.msg_q)
 
 class BaseMsg(object):
     '''
@@ -62,6 +69,6 @@ class BasePlayer(object):
     '''
     A player class, also will allow for future AI hooks
     '''
-    def __init__(self, ptype='HUMAN', turn=False):
+    def __init__(self, ptype='BASE', turn=False):
         self.ptype = ptype
         self.turn = turn
