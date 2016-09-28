@@ -16,7 +16,7 @@ class GameState(BaseModule):
                           "LOAD GAME": ["NOT_IMPLEMENTED"], 
                           "SETTINGS": ["NOT_IMPLEMENTED"], 
                           "EXIT GAME": ["QUIT_GAME"], 
-                          "SINGLEPLAYER": ["NOT_IMPLEMENTED"], 
+                          "SINGLEPLAYER": ["NEW_SINGLE"], 
                           "LOCAL MULTIPLAYER": ["NEW_LMULTI"]}
 
     def handle_msg(self, msg):
