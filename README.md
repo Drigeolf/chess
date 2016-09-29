@@ -13,9 +13,7 @@ TODO:
 
 2) Some basic menu functionality in place, need a more robust system 
 
-3) Hook for future AI
+3) Referee needs to be finished and debugged (most work needed here)
 
-4) Referee needs to be finished and debugged (most work needed here)
-
-5) Need to add player objects, tie the input system to the player, this will also allow 
-for the AI hook
+4) AI hook complete, player/input system done (need to rewrite at somepoint but...)
+now we can implement an AI right after Referee is complete. 

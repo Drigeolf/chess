@@ -1,3 +1,4 @@
+import numpy as np
 from base_modules import BaseModule
 from msgs import ParsedMove, InvalidCommand, QuitGame, GotoMenu
 
@@ -151,4 +152,4 @@ class InputParser(BaseModule):
         except KeyError:
             raise
         
-        return ( (s_row, s_col), (e_row, e_col) )
+        return np.array([ [s_row, s_col], [e_row, e_col] ])

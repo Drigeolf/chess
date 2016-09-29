@@ -4,6 +4,7 @@
 # Created on Sat Jun 13 23:53:13 2015
 
 import numpy as np
+import copy 
 from base_modules import BaseModule
 from msgs import ProcessedMove, RenderBoard, ReadingStatus
  
@@ -40,6 +41,7 @@ class CBoard(BaseModule):
         self.name = "Board"
         # Now board specific attributes
         self.board = board
+        self.temp_board = None
         self.turn = 0
         self.cw = cw
         self.cb = cb
@@ -169,9 +171,31 @@ class CBoard(BaseModule):
         assert (start[1] < 8 and start[1] >= 0), "Starting point out of board."
         assert (end[0] < 8 and end[0] >= 0), "Ending point out of board."
         assert (end[1] < 8 and end[1] >= 0), "Ending point out of board."
-        self.board[end] = self.board[start]
-        self.board[start] = 0
+        self.board[end[0],end[1]] = self.board[start[0],start[1]]
+        self.board[start[0],start[1]] = 0
         self.turn = (self.turn+1)%2
+
+    def testMove(self, moveIndices):
+        """
+        Method to test a move, returns temporary copy of the board
+   
+        Arguments:
+          MoveIndices: 
+            Indices for the move in the format 
+            ( (start tuple), (end tuple) )
+
+        Returns:
+          A temporary board with the move in question made
+        """
+        self.temp_board = copy.deepcopy(self.board)
+        start, end = moveIndices[0], moveIndices[1]
+        assert (start[0] < 8 and start[0] >= 0), "Starting point out of board."
+        assert (start[1] < 8 and start[1] >= 0), "Starting point out of board."
+        assert (end[0] < 8 and end[0] >= 0), "Ending point out of board."
+        assert (end[1] < 8 and end[1] >= 0), "Ending point out of board."
+        self.temp_board[end[0],end[1]] = self.temp_board[start[0],start[1]]
+        self.temp_board[start[0],start[1]] = 0
+        return self.temp_board
     
     def getSquare(self, coord):
         """
