@@ -23,7 +23,10 @@ class AIPlayer(BasePlayer):
         self.turn = turn
 
     def read_input(self):
-        if not self.turn:
-            self.board.send_to_bus(ReadInput(content='e2e4', player=self))
-        else:
-            self.board.send_to_bus(ReadInput(content='d7d5', player=self))
+        from msgs import ValidMove
+        import random
+        ref = self.board.att_modules["MainBus"].att_modules["Referee"]
+        moves = ref.gen_moves()
+        rand_i = random.randint(0, len(moves)-1)
+        rand_move = moves[rand_i]
+        self.board.send_to_bus(ValidMove(content=rand_move))

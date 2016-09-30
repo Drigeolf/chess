@@ -45,6 +45,7 @@ class CBoard(BaseModule):
         self.turn = 0
         self.cw = cw
         self.cb = cb
+        self.ep = False
         self.threp = threp
         self.move50 = move50
         self.check = check 
@@ -146,6 +147,9 @@ class CBoard(BaseModule):
         
         # Make it white's turn
         self.turn = 0
+
+    def move_to_str(self, move):
+        tstrs = map(lambda x: 
  
     def clearBoard(self):
         """

@@ -29,22 +29,25 @@ class CRef(BaseModule):
 
     def validateInput(self, msg):
         inp_move = msg.content
-        self.get_board_state()
+        inp_str = self.board_obj.move_to_str(inp_move)
         # Re-writing this section with a different logic
-        moves = self.gen_moves()
+        moves, move_strs = self.gen_moves()
         # Let's test 
         #driver = self.att_modules['MainBus'].att_modules['Display']
         #for move in moves:
         #    test_board = self.board_obj.testMove(move)
         #    driver.BD.displayMove((test_board, self.turn))
+        #    if inp_move in moves:
+        #        print("PASSED VALIDITY")
         #
-        if inp_move in moves:
+        if inp_str in move_strs:
             PM = ValidMove(content=inp_move)
         else:
             PM = InvalidMove(content=True, player=msg.player)
         return PM
 
     def gen_moves(self):
+        self.get_board_state()
         # turn checking
         N, S, E, W = self.N, self.S, self.E, self.W
         if not self.turn:
@@ -62,6 +65,7 @@ class CRef(BaseModule):
         # Pieces are the keys to the pieceDict that we want to 
         # generate moves for
         moves = []
+        move_strs = []
         for i in range(8):
             for j in range(8):
                 piece = self.board_obj.board[i][j]
@@ -70,7 +74,27 @@ class CRef(BaseModule):
                     dirs = directions[piece]
                     for idir in dirs:
                         # Sort out pawns here
-                        if ((piece == pieces[0]) or (piece == pieces[1]) or (piece == pieces[5])):
+                        if (piece == pieces[0]):
+                            # OOB checking
+                            npos = pos + np.array(idir)
+                            #print(npos, pos, idir)
+                            if (npos > 7).any() or (npos < 0).any(): continue
+                            npiece = self.board_obj.board[npos[0],npos[1]]
+                            if (idir == dirs[1]).all(): 
+                                if (pos[0] != 1 or pos[0] != 6): continue
+                            # if (idir == N+E) or (idir == N+W):
+                            # Landing piece checking
+                            if npiece in pieces: continue
+                            # Capture check
+                            if ((idir == dirs[2]).all() or (idir == dirs[3]).all()): 
+                                if (npiece in epieces):
+                                    moves.append(np.array([pos,npos]))
+                                    move_strs.append(self.board_obj.move_to_str(np.array([pos,npos])))
+                                    continue
+                                continue
+                            moves.append(np.array([pos,npos]))
+                            move_strs.append(self.board_obj.move_to_str(np.array([pos,npos])))
+                        elif (piece == pieces[1]) or (piece == pieces[5]):
                             # OOB checking
                             npos = pos + np.array(idir)
                             if (npos > 7).any() or (npos < 0).any(): continue
@@ -79,8 +103,10 @@ class CRef(BaseModule):
                             if npiece in pieces: continue
                             if npiece in epieces: 
                                 moves.append(np.array([pos,npos]))
-                                break
+                                move_strs.append(self.board_obj.move_to_str(np.array([pos,npos])))
+                                continue
                             moves.append(np.array([pos,npos]))
+                            move_strs.append(self.board_obj.move_to_str(np.array([pos,npos])))
                         else:
                         # Every other piece here
                             for k in range(1,9):
@@ -92,9 +118,11 @@ class CRef(BaseModule):
                                 if npiece in pieces: break
                                 if npiece in epieces: 
                                     moves.append(np.array([pos,npos]))
+                                    move_strs.append(self.board_obj.move_to_str(np.array([pos,npos])))
                                     break
                                 moves.append(np.array([pos,npos]))
-        return np.array(moves)
+                                move_strs.append(self.board_obj.move_to_str(np.array([pos,npos])))
+        return np.array(moves), move_strs
 
     def handle_msg(self, msg):
         if msg.mtype == "PARSED_MOVE":
