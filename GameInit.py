@@ -6,12 +6,17 @@ from InputReader import InputReader
 from GameState import GameState
 from Referee import CRef
 from msgs import InitGame
+from blessings import Terminal
 
 class GameInit(object):
     def __init__(self):
         self.MB = MainBus()
         self.GState = GameState()
-        self.DDisp = DisplayDriver()
+        try:
+            t = Terminal()
+            self.DDisp = DisplayDriver(term=t)
+        except:
+            self.DDisp = DisplayDriver()
         self.IParse = InputParser()
         self.Inp = InputReader()
         self.CB = CBoard()
@@ -27,11 +32,22 @@ class GameInit(object):
         # Temporarily just start a game
         self.MB.msg_q.append(InitGame())
         #self.init_new_game()
-        while self.GState.running:
-            self.MB.run()
-            self.Inp.run()
-            self.IParse.run()
-            self.Ref.run()
-            self.CB.run()
-            self.DDisp.run()
-            self.GState.run()
+        if self.DDisp.term:
+            with self.DDisp.term.fullscreen():
+                while self.GState.running:
+                    self.MB.run()
+                    self.Inp.run()
+                    self.IParse.run()
+                    self.Ref.run()
+                    self.CB.run()
+                    self.DDisp.run()
+                    self.GState.run()
+        else:
+            while self.GState.running:
+                self.MB.run()
+                self.Inp.run()
+                self.IParse.run()
+                self.Ref.run()
+                self.CB.run()
+                self.DDisp.run()
+                self.GState.run()
