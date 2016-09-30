@@ -1,6 +1,6 @@
 import numpy as np
 from base_modules import BaseModule
-from msgs import ParsedMove, InvalidCommand, QuitGame, GotoMenu
+from msgs import ParsedMove, InvalidCommand, QuitGame, GotoMenu, DisplayBoard, NullMsg
 
 class InputParser(BaseModule):
     def __init__(self):
@@ -24,12 +24,12 @@ class InputParser(BaseModule):
               -3: "b", -4: "r", -5: "q",
               -6: "k" }
         self.menu_dict = {"MAIN MENU": ["NEW GAME","LOAD GAME","SETTINGS","EXIT GAME"],
-                          "NEW GAME": ["SINGLEPLAYER", "LOCAL MULTIPLAYER"],
+                          "NEW GAME": ["SINGLE PLAYER", "LOCAL MULTI PLAYER"],
                           "LOAD GAME": ["NOT_IMPLEMENTED"], 
                           "SETTINGS": ["NOT_IMPLEMENTED"], 
                           "EXIT GAME": ["QUIT_GAME"], 
-                          "SINGLEPLAYER": ["NOT_IMPLEMENTED"], 
-                          "LOCAL MULTIPLAYER": ["NEW_LMULTI"]}
+                          "SINGLE PLAYER": ["NEW_SINGLE"], 
+                          "LOCAL MULTI PLAYER": ["NEW_LMULTI"]}
 
     def processInput(self, msg):
         inp_str = msg.content
@@ -55,7 +55,7 @@ class InputParser(BaseModule):
 
     def parseMenuCommand(self, msg):
         cmd = msg.content
-        if cmd == "exit" or cmd =="quit":
+        if cmd.lower() == "exit" or cmd.lower() =="quit":
             MM = QuitGame()
         else:
             try:
@@ -67,8 +67,10 @@ class InputParser(BaseModule):
 
     def parseCommand(self, msg):
         cmd = msg.content
-        if cmd == "exit" or cmd =="quit":
+        if cmd.lower() == "exit" or cmd.lower() =="quit":
             MM = QuitGame(content=True)
+        elif cmd.lower() == 'display':
+            MM = DisplayBoard()
         else:
             MM = InvalidCommand(player=msg.player)
         return MM

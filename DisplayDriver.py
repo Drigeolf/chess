@@ -19,6 +19,7 @@ class DisplayDriver(BaseModule):
             msg.player.read_input()
         elif msg.mtype == "RENDER_BOARD":
             self.BD.handle_msg(msg)
+            msg.player.read_input()
         elif "RENDER_MENU" in msg.mtype:
             self.menu_display(msg)
             self.send_to_bus(ReadingStatus(content="COMMAND"))

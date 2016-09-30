@@ -12,12 +12,12 @@ class GameState(BaseModule):
         self.paused = False
         self.players = []
         self.menu_dict = {"MAIN MENU": ["NEW GAME","LOAD GAME","SETTINGS","EXIT GAME"],
-                          "NEW GAME": ["SINGLEPLAYER", "LOCAL MULTIPLAYER"],
+                          "NEW GAME": ["SINGLE PLAYER", "LOCAL MULTI PLAYER"],
                           "LOAD GAME": ["NOT_IMPLEMENTED"], 
                           "SETTINGS": ["NOT_IMPLEMENTED"], 
                           "EXIT GAME": ["QUIT_GAME"], 
-                          "SINGLEPLAYER": ["NEW_SINGLE"], 
-                          "LOCAL MULTIPLAYER": ["NEW_LMULTI"]}
+                          "SINGLE PLAYER": ["NEW_SINGLE"], 
+                          "LOCAL MULTI PLAYER": ["NEW_LMULTI"]}
 
     def handle_msg(self, msg):
         # Handle quitting

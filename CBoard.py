@@ -92,7 +92,7 @@ class CBoard(BaseModule):
         self.inp_history.append(inp)
 
     def sendBoard(self):
-        ProM = RenderBoard(content=(self.board, self.turn))
+        ProM = RenderBoard(content=(self.board, self.turn), player=self.in_turn())
         return ProM
 
     def in_turn(self):
@@ -108,7 +108,6 @@ class CBoard(BaseModule):
             self.send_now(ProM)
         elif msg.mtype == "START_GAME":
             self.add_players(msg.players)
-            self.in_turn().read_input()
         elif msg.mtype == "QUIT_GAME":
             print("Printing history before quitting")
             print(",".join(self.inp_history))

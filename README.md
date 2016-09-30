@@ -11,9 +11,14 @@ TODO:
 
 1) Save/load and output in various standard formats 
 
-2) Some basic menu functionality in place, need a more robust system 
+2) At some point will need to rethink how menus actually work.
 
-3) Referee needs to be finished and debugged (most work needed here)
+3) Referee somewhat done, some more types of move checking still need to be 
+implemented, namely: castling, en passant. I'm fairly certain that's about it
 
-4) AI hook complete, player/input system done (need to rewrite at somepoint but...)
-now we can implement an AI right after Referee is complete. 
+4) Random AI implemented, more rewrites to random places will end up being
+needed almost surely. Now onto actual AI tests? Like very basic tree search
+with a simple scoring function?
+
+5) Game state checking need to be added, in check, three-fold-repetition,
+win/lose, stalemate etc.

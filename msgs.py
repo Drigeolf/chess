@@ -1,6 +1,15 @@
 from base_modules import BaseMsg
 
 # A description of all msgs we have
+class NullMsg(BaseMsg):
+    '''
+    Absolutely nothing
+    '''
+    def __init__(self, content=None, mtype='NULL', player=None):
+        self.content = content
+        self.mtype = mtype
+        self.player = player
+
 class ReadInput(BaseMsg):
     '''
     This is the msg from the input reader, passing the input entered by the player
@@ -105,10 +114,11 @@ class RenderBoard(BaseMsg):
     Msg that can be used to display the board, it's read by board class to signal the need to show the 
     board to the player, w/o making a move
     '''
-    def __init__(self, content=None, mtype='RENDER_BOARD', tmodule="Display"):
+    def __init__(self, content=None, mtype='RENDER_BOARD', tmodule="Display", player=None):
         self.content = content
         self.mtype = mtype
         self.tmodule = tmodule
+        self.player = player
 
 class RenderMenu(BaseMsg):
     '''
