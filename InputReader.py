@@ -30,12 +30,12 @@ class InputReader(BaseModule):
             curr_msg = self.msg_q.pop(0)
             self.handle_msg(curr_msg)
         if self.reading == "MOVE" and self.reading_for:
-          inp = raw_input("Plase enter a move: \n")
+          inp = raw_input("Please enter a move: \n")
           IM = ReadInput(content=inp, player=self.reading_for)
           self.reading = False
           self.send_to_bus(IM)
         elif self.reading == "COMMAND":
-          inp = raw_input("Plase enter a command: \n")
+          inp = raw_input("Please enter a command: \n")
           IM = ReadInput(content=inp)
           self.reading = False
           self.send_to_bus(IM)
