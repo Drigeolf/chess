@@ -26,7 +26,7 @@ class AIPlayer(BasePlayer):
         from msgs import ValidMove
         import random
         ref = self.board.att_modules["MainBus"].att_modules["Referee"]
-        moves = ref.gen_moves()
+        moves, move_strs = ref.gen_moves()
         rand_i = random.randint(0, len(moves)-1)
         rand_move = moves[rand_i]
         self.board.send_to_bus(ValidMove(content=rand_move))

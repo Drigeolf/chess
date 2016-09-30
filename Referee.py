@@ -28,6 +28,7 @@ class CRef(BaseModule):
         self.pieceDict = self.board_obj.pieceDict
 
     def validateInput(self, msg):
+        self.get_board_state()
         inp_move = msg.content
         inp_str = self.board_obj.move_to_str(inp_move)
         # Re-writing this section with a different logic
@@ -81,7 +82,9 @@ class CRef(BaseModule):
                             if (npos > 7).any() or (npos < 0).any(): continue
                             npiece = self.board_obj.board[npos[0],npos[1]]
                             if (idir == dirs[1]).all(): 
-                                if (pos[0] != 1 or pos[0] != 6): continue
+                                if (pos[0] != 1 or pos[0] != 6): 
+                                    move_strs.append(self.board_obj.move_to_str(np.array([pos,npos])))
+                                    continue
                             # if (idir == N+E) or (idir == N+W):
                             # Landing piece checking
                             if npiece in pieces: continue
