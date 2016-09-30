@@ -69,6 +69,8 @@ class GameState(BaseModule):
             Player1 = HumanPlayer(turn=t1)
             Player2 = AIPlayer(turn=t2)
             return StartGame(players=[Player1, Player2])
+        elif self.menu_dict[msg.content] == ["NOT_IMPLEMENTED"]:
+            return RenderMenu(content=self.menu_state, menu_dict=self.menu_dict, prev_menu=self.menu_state)
 
         if (not self.in_game) or self.paused:
             self.prev_menu = self.menu_state
