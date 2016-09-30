@@ -10,11 +10,8 @@ class DisplayDriver(BaseModule):
     def __init__(self, term=None):
         super(DisplayDriver, self).__init__()
         self.name = "Display"
-        self.term = term
-        if self.term:
-            print("term tests")
-            print(term.wingo(2))
         self.BD = BoardDisplay(driver=self)
+        self.term = term
 
     def handle_msg(self, msg):
         # Pass moves to board displayer
@@ -30,11 +27,6 @@ class DisplayDriver(BaseModule):
         else:
             pass
 
-    def clean_scr(self):
-        if self.term:
-            self.term.clear()
-        else:
-            pass
 
     def menu_display(self, msg):
         menu_name = msg.content
@@ -54,7 +46,6 @@ class DisplayDriver(BaseModule):
         for elem in menu_content:
             print("# {0}".format(elem))
         print("###################################")        
-        self.clean_scr()
 
 class BoardDisplay(BaseModule):
     def __init__(self, driver=None):
@@ -87,7 +78,7 @@ class BoardDisplay(BaseModule):
             print("###################################")        
             print("#####   Blacks turn to play   #####")
         self.printBoard()
-        self.DisplayDriver.clean_scr()
+        #self.DisplayDriver.clean_scr()
 
     def handle_msg(self, msg):
         if msg.mtype == "PROCESSED_MOVE":

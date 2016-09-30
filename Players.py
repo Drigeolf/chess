@@ -29,4 +29,5 @@ class AIPlayer(BasePlayer):
         moves, move_strs = ref.gen_moves()
         rand_i = random.randint(0, len(moves)-1)
         rand_move = moves[rand_i]
-        self.board.send_to_bus(ValidMove(content=rand_move))
+        rand_str = self.board.move_to_str(rand_move)
+        self.board.send_to_bus(ValidMove(content=rand_move, raw_text=rand_str))

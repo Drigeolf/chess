@@ -6,14 +6,12 @@ from InputReader import InputReader
 from GameState import GameState
 from Referee import CRef
 from msgs import InitGame
-from blessings import Terminal
 
 class GameInit(object):
     def __init__(self):
-        t = Terminal()
         self.MB = MainBus()
         self.GState = GameState()
-        self.DDisp = DisplayDriver(term=t)
+        self.DDisp = DisplayDriver()
         self.IParse = InputParser()
         self.Inp = InputReader()
         self.CB = CBoard()
