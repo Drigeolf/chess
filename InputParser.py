@@ -23,13 +23,13 @@ class InputParser(BaseModule):
               6: "K", -1: "o", -2: "n", 
               -3: "b", -4: "r", -5: "q",
               -6: "k" }
-        self.menu_dict = {"MAIN MENU": ["NEW GAME","LOAD GAME","SETTINGS","EXIT GAME"],
-                          "NEW GAME": ["SINGLE PLAYER", "LOCAL MULTI PLAYER"],
-                          "LOAD GAME": ["NOT_IMPLEMENTED"], 
-                          "SETTINGS": ["NOT_IMPLEMENTED"], 
-                          "EXIT GAME": ["QUIT_GAME"], 
-                          "SINGLE PLAYER": ["NEW_SINGLE"], 
-                          "LOCAL MULTI PLAYER": ["NEW_LMULTI"]}
+        self.menu_dict = {"main menu": ["new game","load game","settings","exit game"],
+                          "new game": ["single player", "local multi player"],
+                          "load game": ["not_implemented"], 
+                          "settings": ["not_implemented"], 
+                          "exit game": ["quit_game"], 
+                          "single player": ["new_single"], 
+                          "local multi player": ["new_lmulti"]}
 
     def processInput(self, msg):
         inp_str = msg.content

@@ -5,19 +5,19 @@ from msgs import ReadingStatus, RenderMenu, InvalidCommand, DisplayBoard, StartG
 class GameState(BaseModule):
     def __init__(self):
         super(GameState, self).__init__()
-        self.menu_state = "MAIN_MENU"
+        self.menu_state = "main_menu"
         self.name = "GameState"
         self.in_game = False
         self.running = True
         self.paused = False
         self.players = []
-        self.menu_dict = {"MAIN MENU": ["NEW GAME","LOAD GAME","SETTINGS","EXIT GAME"],
-                          "NEW GAME": ["SINGLE PLAYER", "LOCAL MULTI PLAYER"],
-                          "LOAD GAME": ["NOT_IMPLEMENTED"], 
-                          "SETTINGS": ["NOT_IMPLEMENTED"], 
-                          "EXIT GAME": ["QUIT_GAME"], 
-                          "SINGLE PLAYER": ["NEW_SINGLE"], 
-                          "LOCAL MULTI PLAYER": ["NEW_LMULTI"]}
+        self.menu_dict = {"main menu": ["new game","load game","settings","exit game"],
+                          "new game": ["single player", "local multi player"],
+                          "load game": ["not_implemented"], 
+                          "settings": ["not_implemented"], 
+                          "exit game": ["quit_game"], 
+                          "single player": ["new_single"], 
+                          "local multi player": ["new_lmulti"]}
 
     def handle_msg(self, msg):
         # Handle quitting
@@ -44,8 +44,8 @@ class GameState(BaseModule):
             self.send_now(DisplayBoard())
         elif msg.mtype == "INIT_GAME":
             # Initialize game, we are in menus now
-            if self.menu_state != "MAIN MENU":
-                self.menu_state = "MAIN MENU"
+            if self.menu_state != "main menu":
+                self.menu_state = "main menu"
             self.send_now(RenderMenu(content=self.menu_state, menu_dict=self.menu_dict, prev_menu=self.menu_state))
         else:
             pass
@@ -55,21 +55,21 @@ class GameState(BaseModule):
         if not msg.content:
             return RenderMenu(content=self.menu_state, menu_dict=self.menu_dict, prev_menu=self.menu_state)
 
-        if self.menu_dict[msg.content] == ["NEW_LMULTI"]:
+        if self.menu_dict[msg.content] == ["new_lmulti"]:
             import random
             t1 = random.randint(0,100)%2 
             t2 = (t1+1)%2
             Player1 = HumanPlayer(turn=t1)
             Player2 = HumanPlayer(turn=t2)
             return StartGame(players=[Player1, Player2])
-        elif self.menu_dict[msg.content] == ["NEW_SINGLE"]:
+        elif self.menu_dict[msg.content] == ["new_single"]:
             import random
             t1 = random.randint(0,100)%2 
             t2 = (t1+1)%2
             Player1 = HumanPlayer(turn=t1)
             Player2 = AIPlayer(turn=t2)
             return StartGame(players=[Player1, Player2])
-        elif self.menu_dict[msg.content] == ["NOT_IMPLEMENTED"]:
+        elif self.menu_dict[msg.content] == ["not_implemented"]:
             return RenderMenu(content=self.menu_state, menu_dict=self.menu_dict, prev_menu=self.menu_state)
 
         if (not self.in_game) or self.paused:

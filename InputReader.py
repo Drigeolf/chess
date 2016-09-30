@@ -47,4 +47,4 @@ class InputReader(BaseModule):
           pass
 
     def clean_inp(self, inp):
-        return inp.strip()
+        return inp.strip().lower()

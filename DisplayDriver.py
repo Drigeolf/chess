@@ -177,6 +177,7 @@ class BoardDisplay(BaseModule):
         print( "     {0}  {1}  {2}  {3}  {4}  {5}  {6}  {7}  "\
                      .format(*['A','B','C','D','E','F','G','H',]))
         print("###################################")        
+        print("Please enter a move:")
 
     def _printBoardTerm(self):
         """
@@ -208,3 +209,4 @@ class BoardDisplay(BaseModule):
                      .format(*['A','B','C','D','E','F','G','H',]), align="^", width=w))
         print("")
         print("{0:{fill}{align}{width}}".format("", fill="#", align="<", width=w))
+        print("Please enter a move:")
